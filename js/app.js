@@ -48,13 +48,17 @@ var Player = function(x, y, sprite) {
 Player.prototype.update = function() {
     for(enemy of allEnemies) {
         //console.log(enemy);
-        if(this.x < enemy.x + enemy.width && this.x + this.width > enemy.x && this.y === enemy.y) {
-            console.log('collide');
+        if((this.x < enemy.x + enemy.width/2) && 
+            (this.x + this.width/2 > enemy.x) && 
+            (this.y < enemy.y + enemy.height/2) && 
+            (this.y + this.height/2 > enemy.y)) {
+            //console.log('collide');            
             this.reset();
         } else if(this.y <= -this.y) {
             //console.log('win');
             this.win();            
         }
+        //console.log(this.y, enemy.y);
     }
 };
 
@@ -88,20 +92,20 @@ Player.prototype.handleInput = function(arrow) {
 }
 
 Player.prototype.reset = function() {
-    this.x = 200;
-    this.y = 400;
+    this.x = 202;
+    this.y = 396;
 }
 
 Player.prototype.win = function() {
     setTimeout(function() {
-        //console.log('you win');
+        console.log('you win');
     }, 500);
 }
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 
-const player = new Player(200, 400, 'images/char-cat-girl.png');
+const player = new Player(202, 396, 'images/char-cat-girl.png');
 const allEnemies = [];
 const enemyOne = new Enemy(-101, 55, 50);
 const enemyTwo = new Enemy(-101, 140, 150);
