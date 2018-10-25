@@ -48,7 +48,7 @@ const Player = function(x, y, sprite) {
 // Checking whether the player collides with 
 // the enemies. If collides, the player is sent back
 // to starting position.
-Player.prototype.update = function() {
+Player.prototype.update = function(allEnemies) {
     for(enemy of allEnemies) {
         if((this.x < enemy.x + enemy.width/2) && 
             (this.x + this.width/2 > enemy.x) && 
