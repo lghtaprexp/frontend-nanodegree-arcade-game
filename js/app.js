@@ -1,5 +1,5 @@
 // Enemies our player must avoid
-var Enemy = function(x, y, speed) {
+const Enemy = function(x, y, speed) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
 
@@ -34,8 +34,7 @@ Enemy.prototype.render = function() {
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
-
-var Player = function(x, y, sprite) {
+const Player = function(x, y, sprite) {
     this.x = x;
     this.y = y;
     this.sprite = sprite;
@@ -43,29 +42,33 @@ var Player = function(x, y, sprite) {
     this.width = 65;
     this.horizontalStep = 101;
     this.verticalJump = 83;
+    this.winPopup = false;
 };
 
+// Checking whether the player collides with 
+// the enemies. If collides, the player is sent back
+// to starting position.
 Player.prototype.update = function() {
     for(enemy of allEnemies) {
-        //console.log(enemy);
         if((this.x < enemy.x + enemy.width/2) && 
             (this.x + this.width/2 > enemy.x) && 
             (this.y < enemy.y + enemy.height/2) && 
             (this.y + this.height/2 > enemy.y)) {
-            //console.log('collide');            
             this.reset();
         } else if(this.y <= -this.y) {
-            //console.log('win');
-            this.win();            
+            this.winPopup = true;
         }
-        //console.log(this.y, enemy.y);
     }
 };
 
+// Draw the player on the screen, required method for game
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+// Using the switch statement to check which 
+// key has been pressed to move the player
+// around the board.
 Player.prototype.handleInput = function(arrow) {
     switch(arrow) {
         case 'up':
@@ -74,7 +77,7 @@ Player.prototype.handleInput = function(arrow) {
             }
             break;
         case 'right':
-            if(this.x < this.horizontalStep * 3) {
+            if(this.x < this.horizontalStep * 4) {
                 this.x += this.horizontalStep;
             }
             break;
@@ -91,21 +94,17 @@ Player.prototype.handleInput = function(arrow) {
     }
 }
 
+// This reset the player to the
+// starting position on the board.
 Player.prototype.reset = function() {
-    this.x = 202;
-    this.y = 396;
+    this.x = this.horizontalStep * 2;
+    this.y = this.verticalJump * 4.7;
 }
 
-Player.prototype.win = function() {
-    setTimeout(function() {
-        console.log('you win');
-    }, 500);
-}
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-
-const player = new Player(202, 396, 'images/char-cat-girl.png');
+const player = new Player(202, 390.1, 'images/char-cat-girl.png');
 const allEnemies = [];
 const enemyOne = new Enemy(-101, 55, 50);
 const enemyTwo = new Enemy(-101, 140, 150);
